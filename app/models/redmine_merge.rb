@@ -1,9 +1,9 @@
 class RedmineMerge
   def self.migrate
-    puts 'Migrating users...'
-    SourceUser.migrate
     puts 'Migrating custom fields...'
     SourceCustomField.migrate
+    puts 'Migrating users...'
+    SourceUser.migrate
     puts 'Migrating trackers...'
     SourceTracker.migrate
     puts 'Migrating issue status...'
