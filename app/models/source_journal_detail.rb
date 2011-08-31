@@ -4,10 +4,11 @@ class SourceJournalDetail < ActiveRecord::Base
 
   belongs_to :journal, :class_name => 'SourceJournal', :foreign_key => 'journal_id'
   
-  count = all.count
-  x,ctr = 0
 
   def self.migrate
+    count = all.count
+    x,ctr = 0
+    
     all.each do |source_journal_detail|
       ctr += 1
       x = 100*ctr/count
