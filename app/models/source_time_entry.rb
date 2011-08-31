@@ -9,7 +9,16 @@ class SourceTimeEntry < ActiveRecord::Base
   
 
   def self.migrate
+    
+    count = all.count
+    i,x = 0
+    
     all.each do |source_time_entry|
+
+      i+=1
+      x = 100*i/count
+      puts "..[#{x}%] #{source_time_entry.id} "
+      
       TimeEntry.create!(source_time_entry.attributes) do |te|
         te.user = User.find(RedmineMerge::Mapper.get_new_user_id(source_time_entry.user.id))
         te.project = Project.find_by_name(source_time_entry.project.name)

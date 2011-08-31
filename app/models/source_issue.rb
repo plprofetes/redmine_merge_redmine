@@ -12,8 +12,18 @@ class SourceIssue < ActiveRecord::Base
   belongs_to :fixed_version, :class_name => 'SourceVersion', :foreign_key => 'fixed_version_id'
   
   def self.migrate
+
+    count = all.count
+    ctr,x = 0
+
     all.each do |source_issue|
+
+      ctr += 1
+      x = 100*ctr/count
+      puts "..[#{x}%] #{source_issue.id} "
+      
       puts "- Migrating issue ##{source_issue.id}: #{source_issue.subject}"
+      next if source_issue.project.nil?
       issue = Issue.create!(source_issue.attributes) do |i|
         i.project = Project.find_by_name(source_issue.project.name)
         puts "-- Set project #{i.project.name}"

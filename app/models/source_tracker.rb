@@ -6,8 +6,8 @@ class SourceTracker < ActiveRecord::Base
 
   def self.migrate
     all.each do |source_tracker|
-      next if Tracker.find_by_name(source_tracker.name)
-
+      puts ".. " << source_tracker.name
+      next unless Tracker.find_by_name(source_tracker.name).nil?
       Tracker.create!(source_tracker.attributes)
     end
   end
