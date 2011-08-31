@@ -7,10 +7,10 @@ class SourceIssueRelation < ActiveRecord::Base
   
   def self.migrate
     all.each do |source_issue_relation|
-
+      puts ".. #{source_issue_relation.issue_from.id} -> #{source_issue_relation.issue_to.id}"
       IssueRelation.create!(source_issue_relation.attributes) do |ir|
-        ir.issue_from = Issue.find_by_subject(source_issue_relation.issue_from.subject)
-        ir.issue_to = Issue.find_by_subject(source_issue_relation.issue_to.subject)
+        ir.issue_from = Issue.find(RedmineMerge::Mapper.get_new_issue_id(source_issue_relation.issue_from.id))
+        ir.issue_to =Issue.find(RedmineMerge::Mapper.get_new_issue_id(source_issue_relation.issue_to.id))
       end
     end
   end
