@@ -8,14 +8,18 @@ class SourceJournal < ActiveRecord::Base
   def self.migrate
 
     count = all.count
-    i,x = 0
+    i = 0
+    x = 0.0
+    start = Time.now.seconds_since_midnight
 
     all.each do |source_journals|
 
       i+=1
-      x = 100*i/count
-      puts "..[#{x}%] #{source_journals.id} "
-      
+      x = 100.0*i/count
+      dt = (Time.now.seconds_since_midnight - start).to_i
+      eta = (dt*100/x - dt).to_i
+      puts "..[journals][#{x.round 4}%][ETA: #{eta/60}m #{eta.modulo 60}s] #{source_journals.id} "
+     
       if source_journals.issue.nil? # when migrating from really old redmine
         puts ".. [!!] nil issue: #{source_journals.journalized_id}"
         next
