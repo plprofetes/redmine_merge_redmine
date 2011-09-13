@@ -7,16 +7,30 @@ class SourceJournalDetail < ActiveRecord::Base
 
   def self.migrate
     count = all.count
-    x,ctr = 0
-    
+    x = 0.0
+    ctr = 0
+    start = Time.now.seconds_since_midnight
+
     all.each do |source_journal_detail|
       ctr += 1
-      x = 100*ctr/count
-      puts "..[#{x}%] #{source_journal_detail.id} "
-      
+      x = 100.0*ctr/count
+      dt = (Time.now.seconds_since_midnight - start).to_i
+      eta = (dt*100/x - dt).to_i
+      puts "..[journal_details][#{x.round 4}%][ETA: #{eta/60}m #{eta.modulo 60}s] #{source_journal_detail.id} "
+
+      if source_journal_detail.journal_id.nil? 
+        puts ".. [!!] nil journal id: #{source_journal_detail.journal_id}"
+        next
+      end
 
       JournalDetail.create!(source_journal_detail.attributes) do |jd|
-        jd.journal = Journal.find(RedmineMerge::Mapper.get_new_journal_id(source_journal_detail.journal_id))
+        njid = RedmineMerge::Mapper.get_new_journal_id(source_journal_detail.journal_id)
+        if njid.nil?
+          puts "parent journal not in Mapper!"
+          next
+        end
+
+        jd.journal = Journal.find(njid)
 
         # Need to remap property keys to their new ids
         if source_journal_detail.prop_key.include?('_id')
