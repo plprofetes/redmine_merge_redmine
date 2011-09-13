@@ -26,13 +26,9 @@ class SourceAttachment < ActiveRecord::Base
     all.each do |source_attachment|
       ctr += 1
       x = 100.0*ctr/count
-      if x != 0
-        dt = (Time.now.seconds_since_midnight - start).to_i
-        eta = (dt*100/x - dt).to_i
-        puts "..[attachment][#{x.round 4}%][ETA: #{eta/60}m #{eta.modulo 60}s] #{source_attachment.id} "
-      else
-        puts "..[attachment][#{x.round 4}%][ETA: estimating... ] #{source_attachment.id} "
-      end
+      dt = (Time.now.seconds_since_midnight - start).to_i
+      eta = (dt*100/x - dt).to_i
+      puts "..[attachment][#{x.round 4}%][ETA: #{eta/60}m #{eta.modulo 60}s] #{source_attachment.id} "
 
 
       Attachment.create!(source_attachment.attributes) do |a|
