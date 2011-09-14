@@ -2,18 +2,22 @@ class RedmineMerge
   def self.migrate
     puts 'Migrating custom fields...'
     SourceCustomField.migrate
+    puts 'Migrating roles...'
+    SourceRoles.migrate
+    puts 'Migrating issue status...'
+    SourceIssueStatus.migrate
     puts 'Migrating users...'
     SourceUser.migrate
     puts 'Migrating trackers...'
     SourceTracker.migrate
-    puts 'Migrating issue status...'
-    SourceIssueStatus.migrate
     puts 'Migrating issue priorities...'
     SourceEnumeration.migrate_issue_priorities
     puts 'Migrating time entry activities...'
     SourceEnumeration.migrate_time_entry_activities
     puts 'Migrating document categories...'
     SourceEnumeration.migrate_document_categories
+    puts 'Migrating groups...'
+    SourceGroup.migrate
 
     # Project-specific data
     puts 'Migrating projects...'
