@@ -20,6 +20,7 @@ class SourceTimeEntry < ActiveRecord::Base
       x = 100*i/count
       puts "..[#{x}%] #{source_time_entry.id} "
       
+      skip = [] #[5474, 5473, 5699, 7016, 1591, 3159]
       if skip.include? source_time_entry.id
         next
       end
