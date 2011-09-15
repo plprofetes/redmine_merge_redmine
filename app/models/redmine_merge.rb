@@ -18,10 +18,13 @@ class RedmineMerge
     SourceEnumeration.migrate_document_categories
     puts 'Migrating groups...'
     SourceGroup.migrate
+    puts 'Migrating Members'   
 
     # Project-specific data
     puts 'Migrating projects...'
     SourceProject.migrate
+    puts 'Migrating Members'   
+    SourceMember.migrate
     puts 'Migrating versions...'
     SourceVersion.migrate
     puts 'Migrating news...'
